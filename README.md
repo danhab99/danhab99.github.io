@@ -2,6 +2,8 @@
 
 Hello, my name is Dan Habot. I am a 21 year old Israeli-American studying computer science. I started programming when I was 12 when my father gave me a text-book titled "Introduction to C#". Ever since then I've been growing myself as a person and as a programmer. Programming grew from a hobby, to a passion, and now I'm looking to make a career out of it.
 
+[Download Resume (.pdf)](Resume%202020.pdf)
+
 - [Dan Habot](#dan-habot)
   - [Skills](#skills)
   - [Experience](#experience)
