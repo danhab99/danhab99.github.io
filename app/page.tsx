@@ -40,6 +40,13 @@ export default function Home() {
             link="tel:+12016759961"
           />
           <Card
+            title="Contact info"
+            color="amber"
+            icon={IoMdKey}
+            label="[Download]"
+            link="/danhabot.vcf"
+          />
+          <Card
             title="LinkedIn"
             color="blue"
             icon={IoLogoLinkedin}
