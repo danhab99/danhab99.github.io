@@ -50,3 +50,15 @@ article * {
 article h1, article h2, article h3, article h4, article h5 {
   @apply font-semibold;
 }
+
+.center {
+  @apply flex flex-row justify-center;
+}
+
+.card {
+  @apply rounded-xl p-2 shadow-lg;
+}
+
+.center-wide {
+  @apply lg:w-2/3 w-11/12;
+}

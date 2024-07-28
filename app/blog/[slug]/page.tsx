@@ -6,8 +6,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-
-const MD_BASEDIR = path.join(process.cwd(), "blog");
+import { MD_BASEDIR } from "@/utils";
 
 export default async function BlogPage({ params }) {
   const name = params.slug;
@@ -19,11 +18,9 @@ export default async function BlogPage({ params }) {
     notFound();
   }
 
-  console.log("BLOG", name, content);
-
   return (
-    <div className="flex flex-row justify-center items-center">
-      <article className="lg:w-2/3 w-9/10">
+    <div className="center items-center">
+      <article className="center-wide">
         <Markdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
@@ -57,8 +54,6 @@ export default async function BlogPage({ params }) {
 
 export async function generateStaticParams() {
   const dirs = await fs.readdir(MD_BASEDIR);
-
-  console.log("list", dirs);
 
   return dirs.map((slug) => ({ slug }));
 }

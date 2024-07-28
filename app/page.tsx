@@ -14,10 +14,10 @@ import {
 
 export default function Home() {
   return (
-    <div className="flex flex-row justify-center">
-      <main className="">
+    <div className="center">
+      <main>
         <div className="flex flex-row justify-center gap-4 items-center py-6">
-          <img 
+          <img
             src="/profile.jpg"
             className="w-20 h-20 rounded-full"
             alt="my profile pic"
@@ -81,6 +81,13 @@ export default function Home() {
             label="[Link]"
             link="https://github.com/danhab99.gpg"
           />
+          <Card
+            title="Blog"
+            color="indigo"
+            icon={IoMdKey}
+            label="-->"
+            link="/blog"
+          />
         </div>
       </main>
     </div>
@@ -99,7 +106,7 @@ function Card(props: CardProps) {
   const Icon = props.icon;
   return (
     <div
-      className={`rounded-xl p-2 bg-gradient-to-br from-${props.color}-400 to-${props.color}-500 shadow-lg`}
+      className={`bg-gradient-to-br from-${props.color}-400 to-${props.color}-500 card`}
     >
       <div className="flex flex-row items-center">
         <div className="px-2">
