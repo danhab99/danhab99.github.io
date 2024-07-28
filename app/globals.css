@@ -39,16 +39,20 @@ h1 {
   @apply text-4xl;
 }
 
-h1, h2, h3, h4, h5, p {
+h1, h2, h3, h4, h5, h6, p, li {
   @apply text-zinc-100;
 }
 
 article * {
-  @apply pt-4 text-wrap font-mono;
+  @apply text-wrap font-mono;
 }
 
-article h1, article h2, article h3, article h4, article h5 {
+article h1, article h2, article h3, article h4, article h5, article h6 {
   @apply font-semibold;
+}
+
+article h1, article h2, article h3, article h4, article h5, article h6, article p {
+  @apply pt-4;
 }
 
 .center {
@@ -61,4 +65,37 @@ article h1, article h2, article h3, article h4, article h5 {
 
 .center-wide {
   @apply lg:w-2/3 w-11/12;
+}
+
+ul {
+  @apply list-disc pl-8;
+}
+
+ol {
+  @apply list-decimal pl-8;
+}
+
+table {
+  @apply bg-zinc-100 rounded-xl;
+}
+
+tr, th, td {
+  @apply p-2;
+}
+
+th {
+  @apply text-center font-semibold;
+}
+
+tr, th {
+  @apply border-b border-solid border-slate-900;
+}
+
+tr:nth-child(even) {
+  @apply bg-zinc-400;
+}
+
+
+tr:nth-child(odd) {
+  @apply bg-zinc-300;
 }
