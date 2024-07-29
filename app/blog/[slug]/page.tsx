@@ -1,11 +1,11 @@
-import fs from "fs/promises";
 import { notFound } from "next/navigation";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { Blog, MD_BASEDIR, listBlogs, readBlog } from "@/blog";
+import { Blog, listBlogs, readBlog } from "@/blog";
+import { Metadata } from "next";
 
 type BlogPageProps = {
   params: { slug: string };
@@ -65,4 +65,25 @@ export async function generateStaticParams() {
   const dirs = await listBlogs();
 
   return dirs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
+  const blog = await readBlog(params.slug);
+
+  return {
+    title: blog.title,
+    description: blog.description,
+    authors: {
+      name: "Dan Habot",
+    },
+    robots: "index",
+    openGraph: {
+      authors: ["Dan Habot"],
+      description: blog.description,
+      publishedTime: blog.createdAt,
+      title: blog.title,
+    },
+  };
 }
