@@ -10,6 +10,8 @@ import {
   IoLogoGithub,
   IoMdDocument,
   IoMdKey,
+  IoIosBook,
+  IoIosPaper,
 } from "react-icons/io";
 
 export default function Home() {
@@ -75,16 +77,9 @@ export default function Home() {
             link="/DanHabot-CV.pdf"
           />
           <Card
-            title="GPG Keys"
             color="purple"
-            icon={IoMdKey}
-            label="[Link]"
-            link="https://github.com/danhab99.gpg"
-          />
-          <Card
             title="Blog"
-            color="indigo"
-            icon={IoMdKey}
+            icon={IoIosPaper}
             label="-->"
             link="/blog"
           />
@@ -105,27 +100,27 @@ type CardProps = {
 function Card(props: CardProps) {
   const Icon = props.icon;
   return (
-    <div
-      className={`bg-gradient-to-br from-${props.color}-400 to-${props.color}-500 card`}
-    >
-      <div className="flex flex-row items-center">
-        <div className="px-2">
-          <IconContext.Provider
-            value={{
-              size: "4rem",
-              className: `fill-zinc-100`,
-            }}
-          >
-            <Icon />
-          </IconContext.Provider>
-        </div>
-        <div className="pr-1">
-          <h5 className="text-zink-500">{props.title}</h5>
-          <a target="_blank" href={props.link}>
+    <a target="_blank" href={props.link}>
+      <div
+        className={`bg-gradient-to-br from-${props.color}-400 to-${props.color}-500 card`}
+      >
+        <div className="flex flex-row items-center">
+          <div className="px-2">
+            <IconContext.Provider
+              value={{
+                size: "4rem",
+                className: `fill-zinc-100`,
+              }}
+            >
+              <Icon />
+            </IconContext.Provider>
+          </div>
+          <div className="pr-1">
+            <h5 className="text-zink-500">{props.title}</h5>
             <h4>{props.label}</h4>
-          </a>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

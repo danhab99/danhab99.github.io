@@ -1,19 +1,22 @@
 import fs from "fs/promises";
 import { notFound } from "next/navigation";
-import * as path from "path";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { MD_BASEDIR } from "@/utils";
+import { Blog, MD_BASEDIR, listBlogs, readBlog } from "@/blog";
 
-export default async function BlogPage({ params }) {
+type BlogPageProps = {
+  params: { slug: string };
+};
+
+export default async function BlogPage({ params }: BlogPageProps) {
   const name = params.slug;
-  let content;
+  var blog: Blog;
 
   try {
-    content = await fs.readFile(`${MD_BASEDIR}/${name}`, "utf8");
+    blog = await readBlog(name);
   } catch (error) {
     notFound();
   }
@@ -21,6 +24,12 @@ export default async function BlogPage({ params }) {
   return (
     <div className="center items-center">
       <article className="center-wide">
+        <div className="py-8">
+          <h1 className="text-6xl text-center underline text-shadow">
+            {blog.title}
+          </h1>
+        </div>
+
         <Markdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
@@ -45,7 +54,7 @@ export default async function BlogPage({ params }) {
             },
           }}
         >
-          {content}
+          {blog.markdown}
         </Markdown>
       </article>
     </div>
@@ -53,7 +62,7 @@ export default async function BlogPage({ params }) {
 }
 
 export async function generateStaticParams() {
-  const dirs = await fs.readdir(MD_BASEDIR);
+  const dirs = await listBlogs();
 
   return dirs.map((slug) => ({ slug }));
 }

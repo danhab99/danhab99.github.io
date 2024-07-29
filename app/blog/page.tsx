@@ -1,29 +1,27 @@
-import { MD_BASEDIR } from "@/utils";
-import fs from "fs/promises";
+import { listBlogs, readBlog } from "@/blog";
 import Link from "next/link";
 
 export default async function BlogList() {
-  const names = await fs.readdir(MD_BASEDIR);
+  const names = await listBlogs();
 
   const blogs = await Promise.all(
     names.map(async (name) => {
-      const content = await fs.readFile(`${MD_BASEDIR}/${name}`, "utf8");
-
-      const firstLineIndex = content.indexOf("\n\n");
-      const secondLineIndex = content.indexOf("\n\n", firstLineIndex + 3);
-
-      const title = content.slice(0, firstLineIndex);
-      const firstLine = content.slice(firstLineIndex, secondLineIndex);
+      const blog = await readBlog(name);
 
       return (
-        <li className="py-2">
+        <div className="py-2">
           <Link href={`/blog/${name}`}>
             <div className="card bg-gradient-to-br from-yellow-100 to-yellow-300">
-              <h3 className="text-slate-900">{title.slice(2)}</h3>
-              <p className="pt-4 text-slate-900">{firstLine}</p>
+              <div className="flex flex-row justify-between items-center">
+                <h3 className="text-slate-900">{blog.title}</h3>
+                <span className="text-slate-700 text-sm h-fit">
+                  {blog.createdAt}
+                </span>
+              </div>
+              <p className="pt-4 text-slate-900">{blog.description}</p>
             </div>
           </Link>
-        </li>
+        </div>
       );
     }),
   );
@@ -34,9 +32,7 @@ export default async function BlogList() {
         <div className="py-6">
           <h1 className="text-center lg:text-8xl">Blogs</h1>
         </div>
-        <main>
-          <ul>{blogs}</ul>
-        </main>
+        <main>{blogs}</main>
       </div>
     </div>
   );

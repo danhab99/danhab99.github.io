@@ -99,3 +99,7 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
   @apply bg-zinc-300;
 }
+
+article code {
+  @apply bg-zinc-800 text-slate-50 px-1 rounded py-px;
+}
