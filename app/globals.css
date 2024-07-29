@@ -103,3 +103,11 @@ tr:nth-child(odd) {
 article code {
   @apply bg-zinc-800 text-slate-50 px-1 rounded py-px;
 }
+
+article p {
+  @apply leading-8 indent-8;
+}
+
+article blockquote {
+  @apply bg-slate-900 border-l-4 border-rose-400 px-4 rounded pb-4 my-4;
+}
