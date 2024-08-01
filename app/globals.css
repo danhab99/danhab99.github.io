@@ -143,3 +143,7 @@ article pre:has(> code) {
 article code.code-block {
   @apply code;
 }
+
+article a {
+  @apply text-sky-300;
+}
