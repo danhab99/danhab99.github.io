@@ -9,6 +9,7 @@ export type Blog = {
   markdown: string;
   createdAt: string;
   description: string;
+  edittedBy: string;
 };
 
 export type BlogHeader = Omit<Blog, "markdown">;

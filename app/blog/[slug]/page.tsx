@@ -47,7 +47,10 @@ export default async function BlogPage({ params }: BlogPageProps) {
                   {String(children).replace(/\n$/, "")}
                 </SyntaxHighlighter>
               ) : (
-                <code className={[inline ? "" : "code-block", className ].join("")} {...props}>
+                <code
+                  className={[inline ? "" : "code-block", className].join("")}
+                  {...props}
+                >
                   {children}
                 </code>
               );
@@ -56,6 +59,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
         >
           {blog.markdown}
         </Markdown>
+        {blog.edittedBy ? (
+          <span className="text-slate-400 text-xs italics">
+            Editted by {blog.edittedBy}
+          </span>
+        ) : null}
       </article>
     </div>
   );
