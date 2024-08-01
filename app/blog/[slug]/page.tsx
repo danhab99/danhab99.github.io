@@ -47,7 +47,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                   {String(children).replace(/\n$/, "")}
                 </SyntaxHighlighter>
               ) : (
-                <code className={className} {...props}>
+                <code className={[inline ? "" : "code-block", className ].join("")} {...props}>
                   {children}
                 </code>
               );

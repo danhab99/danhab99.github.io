@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
 
 .fira-code-default {
   font-family: "Fira Code", monospace;
@@ -39,7 +39,14 @@ h1 {
   @apply text-4xl;
 }
 
-h1, h2, h3, h4, h5, h6, p, li {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
   @apply text-zinc-100;
 }
 
@@ -47,11 +54,22 @@ article * {
   @apply text-wrap font-mono;
 }
 
-article h1, article h2, article h3, article h4, article h5, article h6 {
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
   @apply font-semibold;
 }
 
-article h1, article h2, article h3, article h4, article h5, article h6, article p {
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6,
+article p {
   @apply pt-4;
 }
 
@@ -79,7 +97,9 @@ table {
   @apply bg-zinc-100 rounded-xl;
 }
 
-tr, th, td {
+tr,
+th,
+td {
   @apply p-2;
 }
 
@@ -87,14 +107,14 @@ th {
   @apply text-center font-semibold;
 }
 
-tr, th {
+tr,
+th {
   @apply border-b border-solid border-slate-900;
 }
 
 tr:nth-child(even) {
   @apply bg-zinc-400;
 }
-
 
 tr:nth-child(odd) {
   @apply bg-zinc-300;
@@ -110,4 +130,16 @@ article p {
 
 article blockquote {
   @apply bg-slate-900 border-l-4 border-rose-400 px-4 rounded pb-4 my-4;
+}
+
+.code {
+  @apply bg-zinc-900 text-white;
+}
+
+article pre:has(> code) {
+  @apply code shadow-xl p-4 rounded-lg mb-2;
+}
+
+article code.code-block {
+  @apply code;
 }
