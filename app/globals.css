@@ -65,8 +65,15 @@ article h3,
 article h4,
 article h5,
 article h6,
-article p {
+article p,
+article ul,
+article ol {
   @apply pt-4;
+}
+
+article p,
+article li {
+  @apply font-medium;
 }
 
 .center {
@@ -121,11 +128,11 @@ article code {
 }
 
 article p {
-  @apply leading-8 indent-8;
+  @apply indent-8;
 }
 
 article blockquote {
-  @apply bg-slate-900 border-l-4 border-rose-400 px-4 rounded pb-4 my-4;
+  @apply bg-slate-300/10 border-l-4 border-rose-400 rounded pb-2 my-4;
 }
 
 .code {
@@ -142,4 +149,8 @@ article code.code-block {
 
 article a {
   @apply text-sky-300;
+}
+
+article a:hover {
+  @apply text-sky-200;
 }
