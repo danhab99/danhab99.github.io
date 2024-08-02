@@ -16,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <div className="h-screen w-screen fixed top-0 z-[-1000] bg-gradient-to-br from-slate-600 to-slate-800 p-4"></div>
+      </body>
     </html>
   );
 }

@@ -15,10 +15,6 @@
   @apply fira-code-default;
 }
 
-body {
-  @apply bg-gradient-to-br from-slate-600 to-slate-800 min-h-screen p-4;
-}
-
 h5 {
   @apply text-lg;
 }
