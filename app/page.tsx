@@ -10,9 +10,9 @@ import {
   IoLogoGithub,
   IoMdDocument,
   IoMdKey,
-  IoIosBook,
   IoIosPaper,
 } from "react-icons/io";
+import { IoLogoSoundcloud } from "react-icons/io5";
 
 export default function Home() {
   return (
@@ -82,6 +82,13 @@ export default function Home() {
             icon={IoIosPaper}
             label="-->"
             link="/blog"
+          />
+          <Card
+            color="orange"
+            title="SoundCloud"
+            icon={IoLogoSoundcloud}
+            label="[Link]"
+            link="https://soundcloud.com/danhab99"
           />
         </div>
       </main>
