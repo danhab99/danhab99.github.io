@@ -11,12 +11,13 @@ import {
   IoMdDocument,
   IoMdKey,
   IoIosPaper,
+  IoMdCalendar,
 } from "react-icons/io";
 import { IoLogoSoundcloud } from "react-icons/io5";
 
 export default function Home() {
   return (
-    <div className="center">
+    <div className="center pb-8">
       <main>
         <div className="flex flex-row justify-center gap-4 items-center py-6">
           <img
@@ -90,6 +91,16 @@ export default function Home() {
             label="[Link]"
             link="https://soundcloud.com/danhab99"
           />
+        </div>
+        <div className="bg-white rounded-2xl p-4 w-full h-fit mt-4">
+          <iframe 
+            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0xeIVVlB-jIUEm9w2UzzY0cZQsVj_WgcOc3zuS4DqHBdPP6YBjlYYsxLxPkqdf6BV8p2iUAx9r?gv=true" 
+            style={{ "border": 0 }}
+            width="100%" 
+            height="600" 
+            frameBorder="0"
+            className="shadow"
+          ></iframe>
         </div>
       </main>
     </div>
