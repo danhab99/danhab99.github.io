@@ -22,7 +22,7 @@ export default function Home() {
         <div className="flex flex-row justify-center gap-4 items-center py-6">
           <img
             src="/profile.jpg"
-            className="w-20 h-20 rounded-full"
+            className="w-20 h-20 rounded-full object-cover"
             alt="my profile pic"
           />
           <h1 className="text-center mb-2 font-bold align-middle">Dan Habot</h1>
