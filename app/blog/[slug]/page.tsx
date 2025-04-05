@@ -7,6 +7,8 @@ import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Blog, listBlogs, readBlog } from "@/blog";
 import { Metadata } from "next";
 
+const SyntaxHighlighterComponent = SyntaxHighlighter as any;
+
 type BlogPageProps = {
   params: { slug: string };
 };
@@ -38,14 +40,14 @@ export default async function BlogPage({ params }: BlogPageProps) {
               const match = /language-(\w+)/.exec(className || "");
 
               return !inline && match ? (
-                <SyntaxHighlighter
+                <SyntaxHighlighterComponent
                   style={dracula}
                   PreTag="div"
                   language={match[1]}
                   {...props}
                 >
                   {String(children).replace(/\n$/, "")}
-                </SyntaxHighlighter>
+                </SyntaxHighlighterComponent>
               ) : (
                 <code
                   className={[inline ? "" : "code-block", className].join("")}
