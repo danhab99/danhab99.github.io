@@ -20,11 +20,13 @@ export default function Home() {
     <div className="center pb-8">
       <main>
         <div className="flex flex-row justify-center gap-4 items-center py-6">
-          <img
-            src="/profile.jpg"
-            className="w-20 h-20 rounded-full object-cover"
-            alt="my profile pic"
-          />
+          <a href="/dan-habot-profile-pic.jpg" download>
+            <img
+              src="/dan-habot-profile-pic.jpg"
+              className="w-20 h-20 rounded-full object-cover"
+              alt="my profile pic"
+            />
+          </a>
           <h1 className="text-center mb-2 font-bold align-middle">Dan Habot</h1>
         </div>
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-3">
