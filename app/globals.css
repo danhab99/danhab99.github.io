@@ -85,7 +85,7 @@ article li {
 }
 
 .center-wide {
-  @apply lg:w-2/3 w-11/12;
+  @apply lg:w-2/3 w-11/12 max-w-screen-xl mx-auto;
 }
 
 ul {
@@ -103,7 +103,7 @@ table {
 tr,
 th,
 td {
-  @apply p-2;
+  @apply p-2 border-l-slate-900 border-l;
 }
 
 th {
@@ -153,4 +153,12 @@ article a {
 
 article a:hover {
   @apply text-sky-200;
+}
+
+.vctest-list > * {
+  @apply my-2;
+}
+
+.vctest-list button {
+  @apply bg-red-500 hover:bg-red-600 text-white p-2 text-sm rounded-lg shadow-md hover:shadow-lg outline-none mx-2 px-2;
 }

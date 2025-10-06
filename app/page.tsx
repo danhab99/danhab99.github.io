@@ -12,6 +12,8 @@ import {
   IoMdKey,
   IoIosPaper,
   IoMdCalendar,
+  IoIosMicrophone,
+  
 } from "react-icons/io";
 import { IoLogoSoundcloud } from "react-icons/io5";
 
@@ -92,6 +94,13 @@ export default function Home() {
             icon={IoLogoSoundcloud}
             label="[Link]"
             link="https://soundcloud.com/danhab99"
+          />
+          <Card
+            color="rose"
+            title="VCTest"
+            icon={IoIosMicrophone}
+            label="-->"
+            link="/vc-test"
           />
         </div>
         <div className="bg-white rounded-2xl p-4 w-full h-fit mt-4">
