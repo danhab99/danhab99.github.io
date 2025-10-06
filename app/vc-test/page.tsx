@@ -160,13 +160,30 @@ export default function VCTest() {
     }
   };
 
+  const testAll = async () => {
+    if (!devices) {
+      return;
+    }
+
+    log("testing all");
+
+    await Promise.all(devices.map(testDevice).map((x) => x()));
+
+    log("done");
+  };
+
+  const reset = () => {
+    log("reset all");
+    setGoodDevices({});
+  };
+
   return (
     <div className="center-wide pt-8">
       <div className="vctest-list">
         <div className="rounded-lg p-4 bg-yellow-300">
           Microphone permission:
           {canGetMic === "prompt" ? (
-            <button onClick={askForPermission("audio")}>prompt</button>
+            <button onClick={askForPermission("audio")}>get permission</button>
           ) : (
             <code>{canGetMic}</code>
           )}
@@ -175,10 +192,15 @@ export default function VCTest() {
         <div className="rounded-lg p-4 bg-cyan-300">
           Camera permission:
           {canGetCamera === "prompt" ? (
-            <button onClick={askForPermission("video")}>prompt</button>
+            <button onClick={askForPermission("video")}>get permission</button>
           ) : (
             <code>{canGetCamera}</code>
           )}
+        </div>
+
+        <div className="flex flex-row gap-4">
+          <button onClick={testAll}>Test All</button>
+          <button onClick={reset}>Reset</button>
         </div>
 
         <table>
