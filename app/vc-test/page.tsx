@@ -35,12 +35,12 @@ function VCTest() {
   }, [canGetMic, canGetCamera]);
 
   const useEffectGetPerm = (
-    name: PermissionName,
+    name: string,
     set: Dispatch<SetStateAction<PermissionState | undefined>>,
   ) => {
     const h = () => {
       (async () => {
-        const status = await navigator.permissions.query({ name });
+        const status = await navigator.permissions.query({ name: name as any });
 
         log(
           `getting existing microphone permissions: ${name} = ${status.state}`,
@@ -68,7 +68,7 @@ function VCTest() {
       updateMicPerms();
     };
 
-  type ReportStatus = "good" | "borked" | "testing..." | undefined;
+  type ReportStatus = "good" | "borked" | "testing..." | "not active" | "cannot test" | undefined;
 
   const [goodDevices, setGoodDevices] = useState<Record<string, ReportStatus>>(
     {},
