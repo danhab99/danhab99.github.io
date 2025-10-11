@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useAddLogs } from "./log";
 
 type WebcamViewProps = {
   device: MediaDeviceInfo;
@@ -6,6 +7,7 @@ type WebcamViewProps = {
 
 export function WebcamView({ device }: WebcamViewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const log = useAddLogs();
 
   useEffect(() => {
     const start = async () => {
@@ -14,14 +16,17 @@ export function WebcamView({ device }: WebcamViewProps) {
           video: { deviceId: device.deviceId },
           audio: false,
         });
+        log(`opening video input ${stream.id}`);
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
+          log(`playing webcam through video ${stream.id}`);
         }
 
         // cleanup on unmount
         return () => {
+          log(`closing video input ${stream.id}`);
           stream.getTracks().forEach((track) => track.stop());
         };
       } catch (err) {

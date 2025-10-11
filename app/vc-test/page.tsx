@@ -1,24 +1,16 @@
 "use client";
 import { SpeakerToneTest } from "@/components/audio";
-import { LogsProvider, useLogs } from "@/components/log";
+import { LogsProvider, useAddLogs, useLogs } from "@/components/log";
 import { MicrophoneLevelTest } from "@/components/microphone";
 import { WebcamView } from "@/components/video";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-enum BrowserCapabilities {
-  Error = 0,
-  NoMediaDevice,
-}
-
 function VCTest() {
-  const [browserCapabilitiesState, setBrowserCapabilitiesState] =
-    useState<BrowserCapabilities>();
   const [canGetMic, setCanGetMic] = useState<PermissionState>();
   const [canGetCamera, setCanGetCamera] = useState<PermissionState>();
 
-  const [logs, addLog] = useLogs();
-
-  const log = (s: string) => addLog(`${new Date().toLocaleString()}: ${s}`);
+  const [logs] = useLogs();
+  const log = useAddLogs();
 
   const [devices, setDevices] = useState<MediaDeviceInfo[]>();
 
@@ -26,7 +18,6 @@ function VCTest() {
     (async () => {
       try {
         if (!("mediaDevices" in navigator)) {
-          setBrowserCapabilitiesState(BrowserCapabilities.NoMediaDevice);
           log("navigator is missing media devices");
           return;
         }
@@ -38,7 +29,6 @@ function VCTest() {
           log(`getting mic error: ${JSON.stringify(e)}`);
         }
       } catch (e) {
-        setBrowserCapabilitiesState(BrowserCapabilities.Error);
         log(`browser capabilities error: ${JSON.stringify(e)}`);
       }
     })();

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
+import { useAddLogs } from "./log";
 
 function useMicrophoneLevel(mediaDeviceInfo?: MediaDeviceInfo) {
   const [level, setLevel] = useState<number>(0); // normalized 0..1
@@ -10,12 +11,16 @@ function useMicrophoneLevel(mediaDeviceInfo?: MediaDeviceInfo) {
     source?: MediaStreamAudioSourceNode;
     stream?: MediaStream;
   }>({});
+  const log = useAddLogs();
 
   useEffect(() => {
     let mounted = true;
 
     (async () => {
-      if (!navigator.mediaDevices?.getUserMedia) return;
+      if (!navigator.mediaDevices?.getUserMedia) {
+        log("no media devices in browser context");
+        return;
+      }
 
       const deviceId =
         typeof mediaDeviceInfo === "string"
@@ -32,20 +37,27 @@ function useMicrophoneLevel(mediaDeviceInfo?: MediaDeviceInfo) {
         },
       });
 
+      log(`opened stream to ${stream.id}`);
+
       const AudioCtx =
         (window as any).AudioContext || (window as any).webkitAudioContext;
       const audioCtx = new AudioCtx();
-      if (audioCtx.state === "suspended") await audioCtx.resume();
+      if (audioCtx.state === "suspended") {
+        log("audio state suspended, resuming");
+        await audioCtx.resume();
+      }
 
       const source = audioCtx.createMediaStreamSource(stream);
       const analyser = audioCtx.createAnalyser();
       analyser.fftSize = 2048;
-      analyser.smoothingTimeConstant = 0.4; // small smoothing on waveform
+      analyser.smoothingTimeConstant = 0.05; // small smoothing on waveform
 
       const bufferLength = analyser.fftSize;
       const dataArray = new Float32Array(bufferLength);
 
       source.connect(analyser);
+
+      log('connected source to analyzer');
 
       const MIN_DB = -80;
       const SMOOTHING_FACTOR = 0.15; // smaller = smoother, slower response
