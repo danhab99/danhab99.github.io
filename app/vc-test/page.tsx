@@ -1,4 +1,6 @@
 "use client";
+import { SpeakerToneTest } from "@/components/audio";
+import { MicrophoneLevelTest } from "@/components/microphone";
 import {
   Dispatch,
   Reducer,
@@ -6,6 +8,7 @@ import {
   useEffect,
   useReducer,
   useState,
+  useRef,
 } from "react";
 
 enum BrowserCapabilities {
@@ -84,12 +87,14 @@ export default function VCTest() {
       updateMicPerms();
     };
 
-  const [goodDevices, setGoodDevices] = useState<
-    Record<string, string | undefined>
-  >({});
+  type ReportStatus = "good" | "borked" | "testing..." | undefined;
+
+  const [goodDevices, setGoodDevices] = useState<Record<string, ReportStatus>>(
+    {},
+  );
 
   const reportDevice = (device: MediaDeviceInfo) => {
-    const d = (report: string) =>
+    const d = (report: ReportStatus) =>
       setGoodDevices((prev) => ({
         ...prev,
         [device.deviceId]: report,
@@ -102,7 +107,6 @@ export default function VCTest() {
   const testDevice = (info: MediaDeviceInfo) => async () => {
     const report = reportDevice(info);
     log(`testing device ${info.label} ${info.kind} ${info.deviceId}`);
-    debugger;
 
     let k: keyof MediaStreamConstraints;
     switch (info.kind) {
@@ -111,6 +115,9 @@ export default function VCTest() {
         break;
       case "videoinput":
         k = "video";
+        break;
+      case "audiooutput":
+        k = "audio";
         break;
       default:
         log("wtf???");
@@ -138,6 +145,10 @@ export default function VCTest() {
       case "videoinput":
         tracks = device.getVideoTracks();
         log(`retrieved video tracks for ${info.deviceId} ${tracks.length}`);
+        break;
+      case "audiooutput":
+        tracks = device.getAudioTracks();
+        log(`retrieved audio outputs for ${info.deviceId} ${tracks.length}`);
         break;
       default:
         throw "wrong kind of device";
@@ -180,22 +191,28 @@ export default function VCTest() {
   return (
     <div className="center-wide pt-8">
       <div className="vctest-list">
-        <div className="rounded-lg p-4 bg-yellow-300">
-          Microphone permission:
-          {canGetMic === "prompt" ? (
-            <button onClick={askForPermission("audio")}>get permission</button>
-          ) : (
-            <code>{canGetMic}</code>
-          )}
-        </div>
+        <div className="flex flex-row gap-2">
+          <div className="rounded-lg p-4 bg-yellow-300 grow">
+            {"Microphone permission: "}
+            {canGetMic === "prompt" ? (
+              <button onClick={askForPermission("audio")}>
+                get permission
+              </button>
+            ) : (
+              <code>{canGetMic}</code>
+            )}
+          </div>
 
-        <div className="rounded-lg p-4 bg-cyan-300">
-          Camera permission:
-          {canGetCamera === "prompt" ? (
-            <button onClick={askForPermission("video")}>get permission</button>
-          ) : (
-            <code>{canGetCamera}</code>
-          )}
+          <div className="rounded-lg p-4 bg-cyan-300 grow">
+            Camera permission:
+            {canGetCamera === "prompt" ? (
+              <button onClick={askForPermission("video")}>
+                get permission
+              </button>
+            ) : (
+              <code>{canGetCamera}</code>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-row gap-4">
@@ -203,29 +220,45 @@ export default function VCTest() {
           <button onClick={reset}>Reset</button>
         </div>
 
-        <table>
+        <table className="w-full">
           <tbody>
-            {devices?.map((device) => (
-              <tr key={device.deviceId}>
-                <td>
-                  {goodDevices[device.deviceId]?.length ? (
-                    goodDevices[device.deviceId]
-                  ) : (
-                    <button onClick={testDevice(device)}>Test</button>
-                  )}
-                </td>
-                <td>{device.label}</td>
-                <td>
-                  <pre className="text-xs">
-                    {JSON.stringify(device, null, 2)}
-                  </pre>
-                </td>
-              </tr>
-            ))}
+            {devices?.map((device) => {
+              let c;
+
+              switch (goodDevices[device.deviceId]) {
+                case "borked":
+                  c = <span>borked</span>;
+                  break;
+                case "good":
+                  switch (device.kind) {
+                    case "audioinput":
+                      c = <MicrophoneLevelTest mic={device} />;
+                      break;
+                    case "audiooutput":
+                      c = <SpeakerToneTest speaker={device} />;
+                    case "videoinput":
+                  }
+                  break;
+                case undefined:
+                  c = <button onClick={testDevice(device)}>Test</button>;
+              }
+
+              return (
+                <tr key={device.deviceId}>
+                  <td>{c}</td>
+                  <td>{device.label}</td>
+                  <td>
+                    <pre className="text-xs">
+                      {JSON.stringify(device, null, 2)}
+                    </pre>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
-        <pre className="text-green-500 bg-black rounded-lg p-4">
+        <pre className="text-green-500 bg-black rounded-lg p-4 whitespace-nowrap overflow-x-auto">
           {logs.map((l) => (
             <div>{l}</div>
           ))}
