@@ -1,31 +1,22 @@
 "use client";
 import { SpeakerToneTest } from "@/components/audio";
+import { LogsProvider, useLogs } from "@/components/log";
 import { MicrophoneLevelTest } from "@/components/microphone";
-import {
-  Dispatch,
-  Reducer,
-  SetStateAction,
-  useEffect,
-  useReducer,
-  useState,
-  useRef,
-} from "react";
+import { WebcamView } from "@/components/video";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 enum BrowserCapabilities {
   Error = 0,
   NoMediaDevice,
 }
 
-export default function VCTest() {
+function VCTest() {
   const [browserCapabilitiesState, setBrowserCapabilitiesState] =
     useState<BrowserCapabilities>();
   const [canGetMic, setCanGetMic] = useState<PermissionState>();
   const [canGetCamera, setCanGetCamera] = useState<PermissionState>();
 
-  const [logs, addLog] = useReducer(
-    (logs: string[], next: string) => [...logs, next],
-    [],
-  );
+  const [logs, addLog] = useLogs();
 
   const log = (s: string) => addLog(`${new Date().toLocaleString()}: ${s}`);
 
@@ -236,7 +227,10 @@ export default function VCTest() {
                       break;
                     case "audiooutput":
                       c = <SpeakerToneTest speaker={device} />;
+                      break;
                     case "videoinput":
+                      c = <WebcamView device={device} />;
+                      break;
                   }
                   break;
                 case undefined:
@@ -265,5 +259,13 @@ export default function VCTest() {
         </pre>
       </div>
     </div>
+  );
+}
+
+export default function VCTestProvider() {
+  return (
+    <LogsProvider>
+      <VCTest />
+    </LogsProvider>
   );
 }
