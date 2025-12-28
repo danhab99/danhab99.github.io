@@ -7,8 +7,17 @@ type SpeakerToneTestProps = {
 
 export function SpeakerToneTest(props: SpeakerToneTestProps) {
   const [running, setRunning] = useState(false);
-  const stop = useRef(() => {});
+  const [volume, setVolume] = useState(50);
+  const stop = useRef<() => void>(() => {});
+  const gainNodeRef = useRef<GainNode | null>(null);
   const log = useAddLogs();
+
+  useEffect(() => {
+    if (gainNodeRef.current) {
+      // Update gain in real time when the slider changes
+      gainNodeRef.current.gain.value = volume / 100;
+    }
+  }, [volume]);
 
   useEffect(() => {
     (async () => {
@@ -20,12 +29,21 @@ export function SpeakerToneTest(props: SpeakerToneTestProps) {
         const audio = new Audio();
         const audioCtx = new AudioContext();
         const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
         const destination = audioCtx.createMediaStreamDestination();
         const stream = destination.stream;
 
+        // Keep ref so volume slider can affect it
+        gainNodeRef.current = gainNode;
+
+        // Initial setup
         oscillator.type = "sine";
         oscillator.frequency.value = 440;
-        oscillator.connect(destination);
+        gainNode.gain.value = volume / 100;
+
+        oscillator.connect(gainNode);
+        gainNode.connect(destination);
+
         oscillator.start();
 
         audio.srcObject = stream;
@@ -38,7 +56,6 @@ export function SpeakerToneTest(props: SpeakerToneTestProps) {
             await audio.play();
           } catch (err) {
             log(`Failed to set sink, retrying... ${err}`);
-
             await new Promise((r) => setTimeout(r, 1000));
             return trySetSink();
           }
@@ -51,6 +68,7 @@ export function SpeakerToneTest(props: SpeakerToneTestProps) {
           audio.pause();
           audio.srcObject = null;
           audioCtx.close();
+          gainNodeRef.current = null;
         };
       } else if (stop.current) {
         log("Stopping audio");
@@ -63,7 +81,16 @@ export function SpeakerToneTest(props: SpeakerToneTestProps) {
 
   return (
     <>
-      <button onClick={toggle}>{running ? "Pause" : "Play"}</button>
+      <button onMouseDown={toggle} onMouseUp={toggle}>
+        {running ? "Playing..." : "Play"}
+      </button>
+      <input
+        type="range"
+        min={0}
+        max={100}
+        value={volume}
+        onChange={(e) => setVolume(Number(e.target.value))}
+      />
     </>
   );
 }

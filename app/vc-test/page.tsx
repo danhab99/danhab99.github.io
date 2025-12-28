@@ -15,7 +15,7 @@ function VCTest() {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>();
 
   useEffect(() => {
-    (async () => {
+    const h = async () => {
       try {
         if (!("mediaDevices" in navigator)) {
           log("navigator is missing media devices");
@@ -31,7 +31,13 @@ function VCTest() {
       } catch (e) {
         log(`browser capabilities error: ${JSON.stringify(e)}`);
       }
-    })();
+    };
+
+    navigator.mediaDevices.addEventListener("devicechange", h);
+    h();
+    return () => {
+      navigator.mediaDevices.removeEventListener("devicechange", h);
+    };
   }, [canGetMic, canGetCamera]);
 
   const useEffectGetPerm = (
@@ -68,7 +74,13 @@ function VCTest() {
       updateMicPerms();
     };
 
-  type ReportStatus = "good" | "borked" | "testing..." | "not active" | "cannot test" | undefined;
+  type ReportStatus =
+    | "good"
+    | "borked"
+    | "testing..."
+    | "not active"
+    | "cannot test"
+    | undefined;
 
   const [goodDevices, setGoodDevices] = useState<Record<string, ReportStatus>>(
     {},
@@ -242,7 +254,7 @@ function VCTest() {
           </tbody>
         </table>
 
-        <pre className="text-green-500 bg-black rounded-lg p-4 whitespace-nowrap overflow-x-auto">
+        <pre className="text-green-500 bg-black rounded-lg p-4 whitespace-nowrap overflow-x-auto no-scrollbar h-64">
           {logs.map((l) => (
             <div>{l}</div>
           ))}

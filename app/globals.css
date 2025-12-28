@@ -162,3 +162,7 @@ article a:hover {
 .vctest-list button {
   @apply bg-red-600 hover:bg-red-700 text-white p-2 text-sm rounded-lg shadow-md hover:shadow-lg outline-none px-2;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
